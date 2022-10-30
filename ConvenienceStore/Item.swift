@@ -10,7 +10,7 @@ struct Item{
     
     let store:String
     let item:String
-    
+    let date:Date
     let price:Int
     let discount:Bool
     let comment:String
@@ -22,4 +22,5 @@ enum Message:String{
     case item = "Pleace choose a item"
     case price = "Pleace choose a price"
     case comment = "Pleace choose a comment"
+
 }

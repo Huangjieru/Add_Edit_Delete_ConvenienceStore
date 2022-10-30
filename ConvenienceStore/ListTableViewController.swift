@@ -14,13 +14,16 @@ class ListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
     }
-
+    
+    
+    @IBAction func goToEdit(_ sender: UIBarButtonItem) {
+        
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "EditTableViewController") else {return}
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -36,17 +39,24 @@ class ListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(ListTableViewCell.self)", for: indexPath) as! ListTableViewCell
-
+        //印出來會有時間，修改格式，只顯示年月日
+        let outputDataFormatter = DateFormatter()
+        outputDataFormatter.dateFormat = "yyyy, MM, dd"
         // Configure the cell...
         let thing = items[indexPath.row]
         cell.itemLabel.text = thing.item
-//        cell.dateLabel.text = thing.date.description
+        cell.dateLabel.text = outputDataFormatter.string(from: thing.date)
         cell.priceLabel.text = "$ " + String(thing.price)
         cell.commentLabel.text = thing.comment
+        cell.storeImageView.image = UIImage(named: thing.store)
         
-        tableView.rowHeight = 150
+        tableView.rowHeight = 160
         cell.itemLabel.font = UIFont.systemFont(ofSize: 25, weight: .bold)
-        cell.priceLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        cell.priceLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        cell.commentLabel.font = UIFont.systemFont(ofSize: 25)
+        cell.storeImageView.contentMode = .scaleAspectFit
+        cell.storeImageView.layer.cornerRadius = 12
+        
         return cell
     }
     //刪除。屬於UITableViewDataSource protocol 的 function
@@ -62,15 +72,26 @@ class ListTableViewController: UITableViewController {
     
     //Step1.退掉編輯頁面回到前一頁（此頁）
     @IBAction func unwindToListTableViewControllerWithSegue(_ unwindSegue: UIStoryboardSegue) {
-        if let sourceViewController = unwindSegue.source as? EditTableViewController,let item = sourceViewController.thing{
-            items.insert(item,at: 0)
-            
-            let indexPath = IndexPath(row: 0, section: 0)
-            //列表頁新增動畫
-            tableView.insertRows(at: [indexPath], with: .fade)
-            tableView.reloadData()
-        }
-        // Use data from the view controller which initiated the unwind segue
+        //修改
+        if let sourceViewController = unwindSegue.source as? EditTableViewController, let thing = sourceViewController.thing
+        {
+                    //當 indexPathForSelectedRow 有值時表示修改,否則為新增
+                    if let indexPath = tableView.indexPathForSelectedRow{
+                        //從編輯頁傳回此頁
+                        items[indexPath.row] = thing
+                        tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+                    }else{
+                        //新增
+                        items.insert(thing,at: 0) //加入陣列
+                        
+                        let NewIndexPath = IndexPath(row: 0, section: 0)
+                        //列表頁新增加入的動畫
+                        tableView.insertRows(at: [NewIndexPath], with: .fade)
+                        tableView.reloadData()
+                    }
+                }
+        
+        //<補充>新增情人時 indexPathForSelectedRow 是 nil,點選 cell 修改情人時 indexPathForSelectedRow 才會有值
     }
 
     /*
@@ -108,14 +129,17 @@ class ListTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        //修改資料傳到下一頁
+        if let controller = segue.destination as? EditTableViewController, let row = tableView.indexPathForSelectedRow?.row{
+            controller.thing = items[row]
+            
+        }
     }
-    */
+    
 
 }
