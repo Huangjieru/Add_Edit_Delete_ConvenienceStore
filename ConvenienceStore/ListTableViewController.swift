@@ -9,12 +9,21 @@ import UIKit
 
 class ListTableViewController: UITableViewController {
     //儲存資料
-    var items = [Item]()
+    var items = [Item](){ //property observer應用儲存資料
+        didSet{ //array 有變動時存檔
+            Item.saveItems(items)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //App目前路徑->Plist檔案
+        print(NSHomeDirectory())
         
+        //讀檔得到一開始的情人
+        if let things = Item.loadLovers(){
+            self.items = things
+        }
     }
     
     
@@ -49,13 +58,17 @@ class ListTableViewController: UITableViewController {
         cell.priceLabel.text = "$ " + String(thing.price)
         cell.commentLabel.text = thing.comment
         cell.storeImageView.image = UIImage(named: thing.store)
+        cell.photoImageView.image = UIImage(named: thing.photo)
         
-        tableView.rowHeight = 160
+        tableView.rowHeight = 180
         cell.itemLabel.font = UIFont.systemFont(ofSize: 25, weight: .bold)
         cell.priceLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
         cell.commentLabel.font = UIFont.systemFont(ofSize: 25)
         cell.storeImageView.contentMode = .scaleAspectFit
         cell.storeImageView.layer.cornerRadius = 12
+        
+        cell.photoImageView.contentMode = .scaleAspectFill
+        cell.storeImageView.layer.cornerRadius = 8
         
         return cell
     }

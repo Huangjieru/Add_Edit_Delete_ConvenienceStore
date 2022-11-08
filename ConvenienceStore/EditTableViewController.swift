@@ -42,6 +42,12 @@ class EditTableViewController: UITableViewController {
         //顯示滾輪
         createPickerView()
         
+        //點選照片觸發選單功能（選擇相簿或拍照）
+        photoImageView.isUserInteractionEnabled = true
+        //價格輸入用數字鍵盤(todo return keyboard!)
+        priceTextField.keyboardType = .numberPad
+        
+        
     }
     func updateUI(){
         
@@ -69,6 +75,26 @@ class EditTableViewController: UITableViewController {
             
         }
     }
+    
+    //MARK: - Action
+    //Tap Gesture選照片或拍照
+    @IBAction func selectPhoto(_ sender: UITapGestureRecognizer) {
+ 
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)//選單樣式
+        let photoAction = UIAlertAction(title: "choose photo", style: .default) { action in
+            self.selectphoto()
+        }
+        let cameraAction = UIAlertAction(title: "take picture", style: .default) { action in
+            self.takePicture()
+        }
+        let cancelAction = UIAlertAction(title: "cancel", style: .default)
+        
+        alertController.addAction(photoAction)
+        alertController.addAction(cameraAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
+ 
+    }
     //建立日期選擇器
     func createDatePicker(){
         print("date")
@@ -79,7 +105,7 @@ class EditTableViewController: UITableViewController {
         datePicker.locale = .autoupdatingCurrent
         //預設為今天
         datePicker.date = .now
-        
+       
     }
     //建立的滾輪
     func createPickerView(){
@@ -91,14 +117,21 @@ class EditTableViewController: UITableViewController {
         //將輸入store欄位的鍵盤替換為滾輪
 //        storeTextField.inputView = pkvStore
         //設計滾輪
+        //初始化pickerView上方的toolBar
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         toolbar.barTintColor = .systemMint
+        //透明
+        toolbar.isTranslucent = true
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(doneButtonTap))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)//彈性的拉開與cancel之間的距離
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(cancelButtonTap))
         //doneButton顏色
         doneButton.tintColor = .white
+        //cancelButton顏色
+        cancelButton.tintColor = .white
         //doneButton顯示在toolbar上
-        toolbar.setItems([doneButton], animated: true)
+        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: true)
         //inputAccessoryView 是輸入區塊上方的輔助區塊
         storeTextField.inputAccessoryView = toolbar
         //將輸入store欄位的鍵盤替換為滾輪 //inputView 是 text filed 輸入時從下方冒出的輸入區塊
@@ -111,10 +144,28 @@ class EditTableViewController: UITableViewController {
         commentTextField.inputAccessoryView = toolbar
         commentTextField.inputView = pkvComment
         
+        
+        
     }
+    //退選擇器
     @objc func doneButtonTap(){
         self.view.endEditing(true)
     }
+    @objc func cancelButtonTap(){
+        self.view.endEditing(true)
+    }
+    
+    //MARK: - 退鍵盤
+    //當點擊view任何喔一處鍵盤收起
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    //return鍵盤
+    //<方法一>從 UITextField 連結 IBAction，Event 選擇 Did End On Exit
+    @IBAction func dismissItemKeyboard(_ sender: Any) {
+    }
+    
+    
     
     // MARK: - Table view data source
 
@@ -141,47 +192,13 @@ class EditTableViewController: UITableViewController {
         }
         return false
     }
-        /*
-         // Override to support conditional editing of the table view.
-         override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-         // Return false if you do not want the specified item to be editable.
-         return true
-         }
-         */
-        
-        /*
-         // Override to support editing the table view.
-         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-         if editingStyle == .delete {
-         // Delete the row from the data source
-         tableView.deleteRows(at: [indexPath], with: .fade)
-         } else if editingStyle == .insert {
-         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-         }
-         }
-         */
-        
-        /*
-         // Override to support rearranging the table view.
-         override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-         
-         }
-         */
-        
-        /*
-         // Override to support conditional rearranging of the table view.
-         override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-         // Return false if you do not want the item to be re-orderable.
-         return true
-         }
-         */
         
         
          // MARK: - Navigation
          
          // In a storyboard-based application, you will often want to do a little preparation before navigation
          override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-             
+             let photo = photoImageView.image?.description ?? ""
              let store = storeTextField.text ?? ""
              let item = itemTextField.text ?? ""
              let date = datePicker.date
@@ -189,12 +206,36 @@ class EditTableViewController: UITableViewController {
              let discount = discountSwitch.isOn
              let comment = commentTextField.text ?? ""
              
-             thing = Item(store: store, item: item, date: date, price: price, discount: discount, comment: comment)
+             thing = Item(photo:photo,store: store, item: item, date: date, price: price, discount: discount, comment: comment)
          }
          
     
 }
 
+//MARK: - UIImagePickerControllerDelegate
+extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationControllerDelegate{
+    //跳出相簿
+    func selectphoto(){
+        let imageContriller = UIImagePickerController()
+        imageContriller.sourceType = .photoLibrary
+        imageContriller.delegate = self
+        present(imageContriller, animated: true)
+    }
+    //選擇照片
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let picture = info [UIImagePickerController.InfoKey.originalImage] as! UIImage //Any型別轉型成UIImage,才可將照片加到Imageview上
+        photoImageView.contentMode = .scaleAspectFill
+        photoImageView.image = picture
+        //選完照片後退掉畫面
+        dismiss(animated: true)
+    }
+    func takePicture(){
+        let controller = UIImagePickerController()
+        controller.sourceType = .camera
+        controller.delegate = self
+        present(controller, animated: true)
+    }
+}
 //MARK: - UIPickerViewDataSource
 extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
     //有幾個滾輪
@@ -237,5 +278,5 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
         }
         
     }
-    
+ 
 }
