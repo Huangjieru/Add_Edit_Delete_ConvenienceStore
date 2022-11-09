@@ -17,6 +17,7 @@ class ListTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorStyle = .none
         //App目前路徑->Plist檔案
         print(NSHomeDirectory())
         

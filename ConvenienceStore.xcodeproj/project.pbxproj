@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B735B83291BDC0F0024D0F0 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B735B82291BDC0F0024D0F0 /* TextField.swift */; };
 		2BDCEF89290980B000E12B17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDCEF88290980B000E12B17 /* AppDelegate.swift */; };
 		2BDCEF8B290980B000E12B17 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDCEF8A290980B000E12B17 /* SceneDelegate.swift */; };
 		2BDCEF90290980B000E12B17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BDCEF8E290980B000E12B17 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B735B82291BDC0F0024D0F0 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		2BDCEF85290980B000E12B17 /* ConvenienceStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConvenienceStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BDCEF88290980B000E12B17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2BDCEF8A290980B000E12B17 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				2BDCEFA02909883400E12B17 /* EditTableViewController.swift */,
 				2BDCEFA22909898900E12B17 /* ListTableViewCell.swift */,
 				2BDCEFA629098C4500E12B17 /* Item.swift */,
+				2B735B82291BDC0F0024D0F0 /* TextField.swift */,
 				2BDCEF91290980B400E12B17 /* Assets.xcassets */,
 				2BDCEF93290980B400E12B17 /* LaunchScreen.storyboard */,
 				2BDCEF96290980B400E12B17 /* Info.plist */,
@@ -150,6 +153,7 @@
 				2BDCEF9D290987BC00E12B17 /* ListTableViewController.swift in Sources */,
 				2BDCEF89290980B000E12B17 /* AppDelegate.swift in Sources */,
 				2BDCEFA12909883400E12B17 /* EditTableViewController.swift in Sources */,
+				2B735B83291BDC0F0024D0F0 /* TextField.swift in Sources */,
 				2BDCEF8B290980B000E12B17 /* SceneDelegate.swift in Sources */,
 				2BDCEFA729098C4500E12B17 /* Item.swift in Sources */,
 				2BDCEFA32909898900E12B17 /* ListTableViewCell.swift in Sources */,

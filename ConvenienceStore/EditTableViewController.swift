@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import Foundation
 
-class EditTableViewController: UITableViewController {
+class EditTableViewController: UITableViewController, UITextFieldDelegate {
 
     var thing:Item?
     
@@ -46,7 +47,7 @@ class EditTableViewController: UITableViewController {
         photoImageView.isUserInteractionEnabled = true
         //價格輸入用數字鍵盤(todo return keyboard!)
         priceTextField.keyboardType = .numberPad
-        
+        priceTextField.setKeyboardButton()//在數字鍵盤上加上done, cancel的bar
         
     }
     func updateUI(){
@@ -109,54 +110,28 @@ class EditTableViewController: UITableViewController {
     }
     //建立的滾輪
     func createPickerView(){
+        
+         //滾輪上done,cancel按鈕設計另外寫在TextField檔案裡的setKeyboardButton()
+        
+        //選擇店家滾輪
         pkvStore = UIPickerView()
         pkvStore.delegate = self
         pkvStore.dataSource = self
-        
         pkvStore.tag = 1 //此處的tag編碼與store在storyboard的textField的tag編碼相同
-        //將輸入store欄位的鍵盤替換為滾輪
-//        storeTextField.inputView = pkvStore
-        //設計滾輪
-        //初始化pickerView上方的toolBar
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        toolbar.barTintColor = .systemMint
-        //透明
-        toolbar.isTranslucent = true
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(doneButtonTap))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)//彈性的拉開與cancel之間的距離
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(cancelButtonTap))
-        //doneButton顏色
-        doneButton.tintColor = .white
-        //cancelButton顏色
-        cancelButton.tintColor = .white
-        //doneButton顯示在toolbar上
-        toolbar.setItems([doneButton,spaceButton,cancelButton], animated: true)
-        //inputAccessoryView 是輸入區塊上方的輔助區塊
-        storeTextField.inputAccessoryView = toolbar
+        storeTextField.setKeyboardButton()
         //將輸入store欄位的鍵盤替換為滾輪 //inputView 是 text filed 輸入時從下方冒出的輸入區塊
         storeTextField.inputView = pkvStore
         
+        //選擇評論滾輪
         pkvComment = UIPickerView()
         pkvComment.delegate = self
         pkvComment.dataSource = self
         pkvComment.tag = 2
-        commentTextField.inputAccessoryView = toolbar
-        commentTextField.inputView = pkvComment
-        
-        
-        
+        commentTextField.setKeyboardButton()
+        commentTextField.inputView = pkvComment //鍵盤替換為滾輪
     }
-    //退選擇器
-    @objc func doneButtonTap(){
-        self.view.endEditing(true)
-    }
-    @objc func cancelButtonTap(){
-        self.view.endEditing(true)
-    }
-    
+
     //MARK: - 退鍵盤
-    //當點擊view任何喔一處鍵盤收起
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -197,6 +172,7 @@ class EditTableViewController: UITableViewController {
          // MARK: - Navigation
          
          // In a storyboard-based application, you will often want to do a little preparation before navigation
+         //準備傳遞資料
          override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
              let photo = photoImageView.image?.description ?? ""
              let store = storeTextField.text ?? ""
@@ -208,7 +184,7 @@ class EditTableViewController: UITableViewController {
              
              thing = Item(photo:photo,store: store, item: item, date: date, price: price, discount: discount, comment: comment)
          }
-         
+  
     
 }
 
@@ -280,3 +256,4 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
     }
  
 }
+
