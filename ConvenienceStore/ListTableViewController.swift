@@ -18,11 +18,11 @@ class ListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorStyle = .none
-        //App目前路徑->Plist檔案
+        //App目前路徑-><方法一>Plist檔案/<方法二>documentDirectory
         print(NSHomeDirectory())
         
-        //讀檔得到一開始的情人
-        if let things = Item.loadLovers(){
+        //讀檔得到儲存的資料
+        if let things = Item.loadItems(){
             self.items = things
         }
     }
@@ -59,7 +59,7 @@ class ListTableViewController: UITableViewController {
         cell.priceLabel.text = "$ " + String(thing.price)
         cell.commentLabel.text = thing.comment
         cell.storeImageView.image = UIImage(named: thing.store)
-        cell.photoImageView.image = UIImage(named: thing.photo)
+        cell.photoImageView.image = UIImage(contentsOfFile: thing.photoName ?? "")
         
         tableView.rowHeight = 180
         cell.itemLabel.font = UIFont.systemFont(ofSize: 25, weight: .bold)

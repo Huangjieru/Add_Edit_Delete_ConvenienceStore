@@ -161,10 +161,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Store" id="lde-rN-pI1">
+                            <tableViewSection headerTitle="Store" footerTitle="" id="lde-rN-pI1">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="70" id="IS3-fT-D6H">
-                                        <rect key="frame" x="0.0" y="311.33333015441895" width="390" height="70"/>
+                                        <rect key="frame" x="0.0" y="318.66666221618652" width="390" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IS3-fT-D6H" id="lx2-HQ-Qa2">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
@@ -189,7 +189,7 @@
                             <tableViewSection headerTitle="Item" id="jwz-OZ-EGP">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="70" id="p6K-uZ-XhE">
-                                        <rect key="frame" x="0.0" y="437.33333015441895" width="390" height="70"/>
+                                        <rect key="frame" x="0.0" y="448.66666221618652" width="390" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="p6K-uZ-XhE" id="z4l-pP-c76">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
@@ -217,7 +217,7 @@
                             <tableViewSection headerTitle="Date" id="Z7b-UY-A0G">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="70" id="pdT-KF-yNE">
-                                        <rect key="frame" x="0.0" y="563.33333015441895" width="390" height="70"/>
+                                        <rect key="frame" x="0.0" y="574.66666221618652" width="390" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pdT-KF-yNE" id="xaB-5Q-d04">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
@@ -240,7 +240,7 @@
                             <tableViewSection headerTitle="Price" id="1c5-Qn-Jbs">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="70" id="7ck-lo-rEV">
-                                        <rect key="frame" x="0.0" y="689.33333015441895" width="390" height="70"/>
+                                        <rect key="frame" x="0.0" y="700.66666221618652" width="390" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7ck-lo-rEV" id="SQ7-Yh-I0H">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
@@ -291,7 +291,7 @@
                             <tableViewSection headerTitle="Comment" id="MOr-cu-gTB">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="70" id="jZg-Hk-gQ5">
-                                        <rect key="frame" x="0.0" y="815.33333015441895" width="390" height="70"/>
+                                        <rect key="frame" x="0.0" y="826.66666221618652" width="390" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jZg-Hk-gQ5" id="AsO-MC-w3N">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
@@ -341,6 +341,11 @@
                 <tapGestureRecognizer id="b53-8Q-Mkp">
                     <connections>
                         <action selector="selectPhoto:" destination="Py5-f2-967" id="OMV-Vm-504"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="6LP-kV-HjY">
+                    <connections>
+                        <action selector="dismissKeyboardByView:" destination="Py5-f2-967" id="oQp-I8-j7e"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

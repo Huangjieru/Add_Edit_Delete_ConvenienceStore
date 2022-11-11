@@ -11,6 +11,7 @@ import Foundation
 class EditTableViewController: UITableViewController, UITextFieldDelegate {
 
     var thing:Item?
+    var isSelectedPhoto = false //是否選擇相簿
     
     var pkvStore:UIPickerView!
     var pkvComment:UIPickerView!
@@ -131,16 +132,10 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         commentTextField.inputView = pkvComment //鍵盤替換為滾輪
     }
 
-    //MARK: - 退鍵盤
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
     //return鍵盤
     //<方法一>從 UITextField 連結 IBAction，Event 選擇 Did End On Exit
     @IBAction func dismissItemKeyboard(_ sender: Any) {
     }
-    
-    
     
     // MARK: - Table view data source
 
@@ -174,15 +169,38 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
          // In a storyboard-based application, you will often want to do a little preparation before navigation
          //準備傳遞資料
          override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-             let photo = photoImageView.image?.description ?? ""
+             var photoName:String?
              let store = storeTextField.text ?? ""
              let item = itemTextField.text ?? ""
              let date = datePicker.date
              let price = Int(priceTextField.text ?? "0") ?? 0
              let discount = discountSwitch.isOn
              let comment = commentTextField.text ?? ""
+             //如果選擇照片
+             if isSelectedPhoto{
+                 if let item = thing{ //修改：改照片就用原本名字
+                     photoName = item.photoName
+                 }
+                 if photoName == nil{ //新增：取新名字
+                     photoName = UUID().uuidString
+                 }
+             }
+        //圖片呼叫data
+             //compressionQuality(0~1)來減少圖片容量
+             let photoData = photoImageView.image?.jpegData(compressionQuality: 0.7)
+             //圖片路徑：先讀出「資料夾」加上「圖片名稱」加上「副檔名」
+             let photoURL = Item.documentsDirectory.appending(path: photoName!).appendingPathExtension("jpg")
+             //將圖片存入路徑位置=>write是複寫，存入後之前的會被覆蓋掉
+             //<方法一>try? photoData?.write(to: photoURL)
+             //<方法二>
+             do{
+               let _ = try photoData?.write(to: photoURL)
+             }catch{
+                print("can't get photoURL")
+             }
              
-             thing = Item(photo:photo,store: store, item: item, date: date, price: price, discount: discount, comment: comment)
+             
+             thing = Item(photoName:photoName,store: store, item: item, date: date, price: price, discount: discount, comment: comment)
          }
   
     
@@ -199,6 +217,7 @@ extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationC
     }
     //選擇照片
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        isSelectedPhoto = true
         let picture = info [UIImagePickerController.InfoKey.originalImage] as! UIImage //Any型別轉型成UIImage,才可將照片加到Imageview上
         photoImageView.contentMode = .scaleAspectFill
         photoImageView.image = picture
