@@ -15,6 +15,10 @@ struct Item:Codable{ //要 Codable or Encodable 才能轉成 Data
     let price:Int
     let discount:Bool
     let comment:String
+    
+    var photoURL:URL {
+        Item.documentsDirectory.appending(path: photoName ?? "")
+    }
     /*
      //<方法一>UserDefaults
      //UserDefaults使用者預設資料庫，透過key-value儲存資料到App內。
@@ -38,6 +42,7 @@ struct Item:Codable{ //要 Codable or Encodable 才能轉成 Data
      }*/
     
     //<方法二>
+    //取得資料夾的位置。App一產生就會有documents資料夾
     static let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     
     static func loadItems() -> [Self]?{ //有可能讀到東西也可能沒讀到

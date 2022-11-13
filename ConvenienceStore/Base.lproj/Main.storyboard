@@ -69,11 +69,16 @@
                                                 <constraint firstAttribute="height" constant="80" id="vWl-Rf-E8f"/>
                                             </constraints>
                                         </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="02G-FE-hdP">
-                                            <rect key="frame" x="299.33333333333331" y="82.333333333333329" width="60.666666666666686" height="60.666666666666671"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="02G-FE-hdP" secondAttribute="height" multiplier="1:1" id="xkv-7i-3RT"/>
-                                            </constraints>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="hshs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u4o-cN-NQf">
+                                            <rect key="frame" x="302" y="137" width="37" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Hi-Life" translatesAutoresizingMaskIntoConstraints="NO" id="2sS-ix-UCl">
+                                            <rect key="frame" x="312" y="91" width="54" height="52"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -81,12 +86,9 @@
                                         <constraint firstAttribute="bottom" secondItem="PAv-0v-6vC" secondAttribute="bottom" constant="30" id="99Y-f3-2ML"/>
                                         <constraint firstItem="ZcB-3g-7Iu" firstAttribute="leading" secondItem="sDp-sU-jhk" secondAttribute="leading" constant="30" id="FZg-sl-Rte"/>
                                         <constraint firstItem="PAv-0v-6vC" firstAttribute="top" secondItem="sDp-sU-jhk" secondAttribute="top" constant="30" id="Gtf-vA-F5f"/>
-                                        <constraint firstItem="02G-FE-hdP" firstAttribute="top" secondItem="DEq-aj-Tgu" secondAttribute="bottom" constant="32" id="Xqg-kW-8Od"/>
                                         <constraint firstAttribute="bottom" secondItem="ZcB-3g-7Iu" secondAttribute="bottom" constant="30" id="bbL-S9-iI6"/>
-                                        <constraint firstAttribute="bottom" secondItem="02G-FE-hdP" secondAttribute="bottom" constant="30" id="cNV-bI-6nh"/>
                                         <constraint firstItem="PAv-0v-6vC" firstAttribute="leading" secondItem="ZcB-3g-7Iu" secondAttribute="trailing" constant="30" id="lLK-ma-zdN"/>
                                         <constraint firstItem="DEq-aj-Tgu" firstAttribute="top" secondItem="sDp-sU-jhk" secondAttribute="top" constant="30" id="vbt-4Q-xyj"/>
-                                        <constraint firstAttribute="trailing" secondItem="02G-FE-hdP" secondAttribute="trailing" constant="30" id="y8S-Nc-D5t"/>
                                         <constraint firstAttribute="trailing" secondItem="DEq-aj-Tgu" secondAttribute="trailing" constant="30" id="ywR-qD-itm"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -101,7 +103,7 @@
                                     <outlet property="commentLabel" destination="DEq-aj-Tgu" id="M3t-mw-eIc"/>
                                     <outlet property="dateLabel" destination="PY2-gs-tfs" id="h7d-Ce-c3T"/>
                                     <outlet property="itemLabel" destination="Dig-Lz-Kvp" id="8AQ-XL-fgK"/>
-                                    <outlet property="photoImageView" destination="02G-FE-hdP" id="L6b-us-4xN"/>
+                                    <outlet property="photoImageView" destination="2sS-ix-UCl" id="kvV-KY-qFX"/>
                                     <outlet property="priceLabel" destination="T6g-Sh-56D" id="dva-zL-dpS"/>
                                     <outlet property="storeImageView" destination="ZcB-3g-7Iu" id="xTl-cR-Tfi"/>
                                     <segue destination="Py5-f2-967" kind="show" identifier="goToEditVC" id="SFK-3u-HfH"/>
@@ -253,9 +255,6 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="169.66666666666666" height="70"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <action selector="dismissPriceKeyboard:" destination="Py5-f2-967" eventType="primaryActionTriggered" id="2Ic-tA-1NY"/>
-                                                            </connections>
                                                         </textField>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="KRj-Vk-Zot">
                                                             <rect key="frame" x="249.66666666666671" y="0.0" width="80.333333333333343" height="70"/>
@@ -343,11 +342,7 @@
                         <action selector="selectPhoto:" destination="Py5-f2-967" id="OMV-Vm-504"/>
                     </connections>
                 </tapGestureRecognizer>
-                <tapGestureRecognizer id="6LP-kV-HjY">
-                    <connections>
-                        <action selector="dismissKeyboardByView:" destination="Py5-f2-967" id="oQp-I8-j7e"/>
-                    </connections>
-                </tapGestureRecognizer>
+                <tapGestureRecognizer id="6LP-kV-HjY"/>
             </objects>
             <point key="canvasLocation" x="1633.8461538461538" y="14.218009478672984"/>
         </scene>
@@ -371,6 +366,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Hi-Life" width="224" height="224"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

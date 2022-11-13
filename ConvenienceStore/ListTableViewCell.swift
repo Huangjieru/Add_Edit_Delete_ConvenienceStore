@@ -21,7 +21,6 @@ class ListTableViewCell: UITableViewCell {
     @IBOutlet weak var commentLabel: UILabel!
     
     @IBOutlet weak var photoImageView: UIImageView!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -46,6 +46,8 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         
         //點選照片觸發選單功能（選擇相簿或拍照）
         photoImageView.isUserInteractionEnabled = true
+ 
+        
         //價格輸入用數字鍵盤(todo return keyboard!)
         priceTextField.keyboardType = .numberPad
         priceTextField.setKeyboardButton()//在數字鍵盤上加上done, cancel的bar
@@ -66,7 +68,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         priceTextField.font = font
         commentTextField.font = font
     }
-    //修改資料傳到編輯頁，顯示之前的記錄
+    //修改資料傳到編輯頁，顯示之前的記錄（讀檔）
     func editorUpdateUI(){
         if thing != nil{
             storeTextField.text = thing?.store
@@ -74,6 +76,11 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
             datePicker.date = thing!.date
             priceTextField.text = thing?.price.description
             commentTextField.text = thing?.comment
+            //有圖片名字才去讀出url
+            if let imageName = thing?.photoName{
+                let photoURL = Item.documentsDirectory.appending(path: imageName).appendingPathExtension("jpg")
+                photoImageView.image = UIImage(named: photoURL.path)
+            }
             
         }
     }
@@ -184,21 +191,22 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
                  if photoName == nil{ //新增：取新名字
                      photoName = UUID().uuidString
                  }
+                 //圖片呼叫data,透過data存檔到指定的路徑
+                  //compressionQuality(0~1)來減少圖片容量
+                  let photoData = photoImageView.image?.jpegData(compressionQuality: 0.7)
+                  //圖片路徑：先讀出「資料夾」加上「圖片名稱」加上「副檔名」
+                  let photoURL = Item.documentsDirectory.appending(path: photoName!).appendingPathExtension("jpg")
+                  //將圖片存入路徑位置=>write是複寫，存入後之前的會被覆蓋掉
+                  //<方法一>try? photoData?.write(to: photoURL)
+                  //<方法二>
+                  do{
+                    let _ = try photoData?.write(to: photoURL)
+                  }catch{
+                     print("can't get photoURL")
+                  }
+                      
              }
-        //圖片呼叫data
-             //compressionQuality(0~1)來減少圖片容量
-             let photoData = photoImageView.image?.jpegData(compressionQuality: 0.7)
-             //圖片路徑：先讀出「資料夾」加上「圖片名稱」加上「副檔名」
-             let photoURL = Item.documentsDirectory.appending(path: photoName!).appendingPathExtension("jpg")
-             //將圖片存入路徑位置=>write是複寫，存入後之前的會被覆蓋掉
-             //<方法一>try? photoData?.write(to: photoURL)
-             //<方法二>
-             do{
-               let _ = try photoData?.write(to: photoURL)
-             }catch{
-                print("can't get photoURL")
-             }
-             
+        
              
              thing = Item(photoName:photoName,store: store, item: item, date: date, price: price, discount: discount, comment: comment)
          }
