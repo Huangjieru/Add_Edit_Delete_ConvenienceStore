@@ -106,7 +106,6 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
  
     }
 
-    
     //建立日期選擇器
     func createDatePicker(){
         print("date")
@@ -119,6 +118,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         datePicker.date = .now
        
     }
+    
     //建立的滾輪
     func createPickerView(){
         
@@ -150,6 +150,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func dismissPriceKeyboard(_ sender: Any) {
     }
+    
     //點背景退鍵盤
     func dismissKeyboardFromBackground(){
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -256,6 +257,7 @@ extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationC
         present(controller, animated: true)
     }
 }
+
 //MARK: - UIPickerViewDataSource
 extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
     //有幾個滾輪
