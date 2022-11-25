@@ -11,6 +11,7 @@ import Foundation
 class EditTableViewController: UITableViewController, UITextFieldDelegate {
 
     var thing:Item?
+    var isSelectedPhoto = false //是否選擇相簿
     
     var pkvStore:UIPickerView!
     var pkvComment:UIPickerView!
@@ -42,14 +43,17 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         createDatePicker()
         //顯示滾輪
         createPickerView()
-        
+        //點背景退鍵盤及PickerView
+        dismissKeyboardFromBackground()
         //點選照片觸發選單功能（選擇相簿或拍照）
         photoImageView.isUserInteractionEnabled = true
-        //價格輸入用數字鍵盤(todo return keyboard!)
+        //數字鍵盤及上方Tabbar
         priceTextField.keyboardType = .numberPad
-        priceTextField.setKeyboardButton()//在數字鍵盤上加上done, cancel的bar
+        priceTextField.setKeyboardButton()
+       
         
     }
+    
     func updateUI(){
         
         tableView.separatorStyle = .none
@@ -57,7 +61,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         storeTextField.placeholder = "Pleace type the store."
         itemTextField.placeholder = "Pleace type the item."
         priceTextField.placeholder = "How much it is?"
-        commentTextField.placeholder = "Comment here!2 "
+        commentTextField.placeholder = "Comment here!"
         
         let font = UIFont.systemFont(ofSize: 18, weight: .regular)
         storeTextField.font = font
@@ -65,7 +69,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         priceTextField.font = font
         commentTextField.font = font
     }
-    //修改資料傳到編輯頁，顯示之前的記錄
+    //修改資料傳到編輯頁，顯示之前的記錄（讀檔）
     func editorUpdateUI(){
         if thing != nil{
             storeTextField.text = thing?.store
@@ -73,22 +77,27 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
             datePicker.date = thing!.date
             priceTextField.text = thing?.price.description
             commentTextField.text = thing?.comment
+            //有圖片名字才去讀出url
+            if let imageName = thing?.photoName{
+                let photoURL = Item.documentsDirectory.appending(path: imageName).appendingPathExtension("jpg")
+                photoImageView.image = UIImage(named: photoURL.path)
+            }
             
         }
     }
     
-    //MARK: - Action
+    //MARK: - Target Action
     //Tap Gesture選照片或拍照
     @IBAction func selectPhoto(_ sender: UITapGestureRecognizer) {
  
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)//選單樣式
-        let photoAction = UIAlertAction(title: "choose photo", style: .default) { action in
+        let photoAction = UIAlertAction(title: "Choose photo", style: .default) { action in
             self.selectphoto()
         }
-        let cameraAction = UIAlertAction(title: "take picture", style: .default) { action in
+        let cameraAction = UIAlertAction(title: "Take picture", style: .default) { action in
             self.takePicture()
         }
-        let cancelAction = UIAlertAction(title: "cancel", style: .default)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
         
         alertController.addAction(photoAction)
         alertController.addAction(cameraAction)
@@ -96,6 +105,8 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         present(alertController, animated: true)
  
     }
+
+    
     //建立日期選擇器
     func createDatePicker(){
         print("date")
@@ -126,22 +137,30 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         pkvComment = UIPickerView()
         pkvComment.delegate = self
         pkvComment.dataSource = self
-        pkvComment.tag = 2
+        pkvComment.tag = 4
         commentTextField.setKeyboardButton()
         commentTextField.inputView = pkvComment //鍵盤替換為滾輪
     }
-
-    //MARK: - 退鍵盤
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
+    
+    
     //return鍵盤
     //<方法一>從 UITextField 連結 IBAction，Event 選擇 Did End On Exit
     @IBAction func dismissItemKeyboard(_ sender: Any) {
     }
     
-    
-    
+    @IBAction func dismissPriceKeyboard(_ sender: Any) {
+    }
+    //點背景退鍵盤
+    func dismissKeyboardFromBackground(){
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func dismissKeyboard(){
+        self.tableView.endEditing(true)
+    }
+  
     // MARK: - Table view data source
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -174,15 +193,39 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
          // In a storyboard-based application, you will often want to do a little preparation before navigation
          //準備傳遞資料
          override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-             let photo = photoImageView.image?.description ?? ""
+             var photoName:String?
              let store = storeTextField.text ?? ""
              let item = itemTextField.text ?? ""
              let date = datePicker.date
              let price = Int(priceTextField.text ?? "0") ?? 0
              let discount = discountSwitch.isOn
              let comment = commentTextField.text ?? ""
+             //如果選擇照片
+             if isSelectedPhoto{
+                 if let item = thing{ //修改：改照片就用原本名字
+                     photoName = item.photoName
+                 }
+                 if photoName == nil{ //新增：取新名字
+                     photoName = UUID().uuidString
+                 }
+                 //圖片呼叫data,透過data存檔到指定的路徑
+                  //compressionQuality(0~1)來減少圖片容量
+                  let photoData = photoImageView.image?.jpegData(compressionQuality: 0.7)
+                  //圖片路徑：先讀出「資料夾」加上「圖片名稱」加上「副檔名」
+                  let photoURL = Item.documentsDirectory.appending(path: photoName!).appendingPathExtension("jpg")
+                  //將圖片存入路徑位置=>write是複寫，存入後之前的會被覆蓋掉
+                  //<方法一>try? photoData?.write(to: photoURL)
+                  //<方法二>
+                  do{
+                    let _ = try photoData?.write(to: photoURL)
+                  }catch{
+                     print("can't get photoURL")
+                  }
+                      
+             }
+        
              
-             thing = Item(photo:photo,store: store, item: item, date: date, price: price, discount: discount, comment: comment)
+             thing = Item(photoName:photoName,store: store, item: item, date: date, price: price, discount: discount, comment: comment)
          }
   
     
@@ -199,8 +242,9 @@ extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationC
     }
     //選擇照片
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        isSelectedPhoto = true
         let picture = info [UIImagePickerController.InfoKey.originalImage] as! UIImage //Any型別轉型成UIImage,才可將照片加到Imageview上
-        photoImageView.contentMode = .scaleAspectFill
+        photoImageView.contentMode = .scaleAspectFit
         photoImageView.image = picture
         //選完照片後退掉畫面
         dismiss(animated: true)
@@ -223,7 +267,7 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
         switch pickerView.tag{
         case 1:
             return storeArray.count
-        case 2:
+        case 4:
             return commentArray.count
         default:
             return 0 //隨便給值 因為不會飽到default段
@@ -235,7 +279,7 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
         switch pickerView.tag{
         case 1:
             return storeArray[row]
-        case 2:
+        case 4:
             return commentArray[row]
         default:
             return "Nothing"
@@ -247,7 +291,7 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
         switch pickerView.tag{
         case 1:
             storeTextField.text = storeArray[row]
-        case 2:
+        case 4:
             commentTextField.text = commentArray[row]
         default:
             break
