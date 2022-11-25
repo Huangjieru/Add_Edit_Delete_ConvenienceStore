@@ -40,14 +40,20 @@ class ListTableViewController: UITableViewController {
                 outputDataFormatter.dateFormat = "yyyy, MM, dd"
                 // Configure the cell...
                 let thing = items[indexPath.row]
+
                 cell.itemLabel.text = thing.item
                 cell.dateLabel.text = outputDataFormatter.string(from: thing.date)
                 cell.priceLabel.text = "$ " + String(thing.price)
                 cell.commentLabel.text = thing.comment
                 cell.storeImageView.image = UIImage(named: thing.store)
         
-                cell.photoImageView.image = UIImage(contentsOfFile: thing.photoURL.path())
-                print("圖片有傳到此頁：\(thing.photoName)")
+        
+        let documentDirectory  = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let imageURL = documentDirectory.appending(path: "\(thing.photoName ?? "").jpg")
+            cell.photoImageView?.image = UIImage(contentsOfFile: imageURL.path)
+//        print("圖片有傳到此頁：\(String(describing: thing.photoName!))")
+//        print(imageURL)
+        
                 tableView.rowHeight = 180
                 cell.itemLabel.font = UIFont.systemFont(ofSize: 25, weight: .bold)
                 cell.priceLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
@@ -56,7 +62,7 @@ class ListTableViewController: UITableViewController {
                 cell.storeImageView.layer.cornerRadius = 12
         
                 cell.photoImageView.contentMode = .scaleAspectFill
-                cell.storeImageView.layer.cornerRadius = 8
+                cell.photoImageView.layer.cornerRadius = 8
         
     }
     
@@ -76,31 +82,11 @@ class ListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(ListTableViewCell.self)", for: indexPath) as! ListTableViewCell
         configure(cell: cell, forItemAt: indexPath)
-//        //印出來會有時間，修改格式，只顯示年月日
-//        let outputDataFormatter = DateFormatter()
-//        outputDataFormatter.dateFormat = "yyyy, MM, dd"
-//        // Configure the cell...
-//        let thing = items[indexPath.row]
-//        cell.itemLabel.text = thing.item
-//        cell.dateLabel.text = outputDataFormatter.string(from: thing.date)
-//        cell.priceLabel.text = "$ " + String(thing.price)
-//        cell.commentLabel.text = thing.comment
-//        cell.storeImageView.image = UIImage(named: thing.store)
-//
-//        cell.photoImageView.image = UIImage(contentsOfFile: thing.photoURL.path())
-//        print("圖片有傳到此頁：\(thing.photoName)")
-//        tableView.rowHeight = 180
-//        cell.itemLabel.font = UIFont.systemFont(ofSize: 25, weight: .bold)
-//        cell.priceLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
-//        cell.commentLabel.font = UIFont.systemFont(ofSize: 25)
-//        cell.storeImageView.contentMode = .scaleAspectFit
-//        cell.storeImageView.layer.cornerRadius = 12
-//
-//        cell.photoImageView.contentMode = .scaleAspectFill
-//        cell.storeImageView.layer.cornerRadius = 8
-//
+
         return cell
     }
+    
+    
     //刪除。屬於UITableViewDataSource protocol 的 function
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         //先從記憶體刪除，在刪除陣列裡資料

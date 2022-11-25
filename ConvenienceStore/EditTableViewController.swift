@@ -43,16 +43,17 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         createDatePicker()
         //顯示滾輪
         createPickerView()
-        
+        //點背景退鍵盤及PickerView
+        dismissKeyboardFromBackground()
         //點選照片觸發選單功能（選擇相簿或拍照）
         photoImageView.isUserInteractionEnabled = true
- 
-        
-        //價格輸入用數字鍵盤(todo return keyboard!)
+        //數字鍵盤及上方Tabbar
         priceTextField.keyboardType = .numberPad
-        priceTextField.setKeyboardButton()//在數字鍵盤上加上done, cancel的bar
+        priceTextField.setKeyboardButton()
+       
         
     }
+    
     func updateUI(){
         
         tableView.separatorStyle = .none
@@ -60,7 +61,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         storeTextField.placeholder = "Pleace type the store."
         itemTextField.placeholder = "Pleace type the item."
         priceTextField.placeholder = "How much it is?"
-        commentTextField.placeholder = "Comment here!2 "
+        commentTextField.placeholder = "Comment here!"
         
         let font = UIFont.systemFont(ofSize: 18, weight: .regular)
         storeTextField.font = font
@@ -85,18 +86,18 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    //MARK: - Action
+    //MARK: - Target Action
     //Tap Gesture選照片或拍照
     @IBAction func selectPhoto(_ sender: UITapGestureRecognizer) {
  
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)//選單樣式
-        let photoAction = UIAlertAction(title: "choose photo", style: .default) { action in
+        let photoAction = UIAlertAction(title: "Choose photo", style: .default) { action in
             self.selectphoto()
         }
-        let cameraAction = UIAlertAction(title: "take picture", style: .default) { action in
+        let cameraAction = UIAlertAction(title: "Take picture", style: .default) { action in
             self.takePicture()
         }
-        let cancelAction = UIAlertAction(title: "cancel", style: .default)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
         
         alertController.addAction(photoAction)
         alertController.addAction(cameraAction)
@@ -104,6 +105,8 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         present(alertController, animated: true)
  
     }
+
+    
     //建立日期選擇器
     func createDatePicker(){
         print("date")
@@ -134,16 +137,30 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
         pkvComment = UIPickerView()
         pkvComment.delegate = self
         pkvComment.dataSource = self
-        pkvComment.tag = 2
+        pkvComment.tag = 4
         commentTextField.setKeyboardButton()
         commentTextField.inputView = pkvComment //鍵盤替換為滾輪
     }
-
+    
+    
     //return鍵盤
     //<方法一>從 UITextField 連結 IBAction，Event 選擇 Did End On Exit
     @IBAction func dismissItemKeyboard(_ sender: Any) {
     }
     
+    @IBAction func dismissPriceKeyboard(_ sender: Any) {
+    }
+    //點背景退鍵盤
+    func dismissKeyboardFromBackground(){
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func dismissKeyboard(){
+        self.tableView.endEditing(true)
+    }
+  
     // MARK: - Table view data source
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -227,7 +244,7 @@ extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationC
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         isSelectedPhoto = true
         let picture = info [UIImagePickerController.InfoKey.originalImage] as! UIImage //Any型別轉型成UIImage,才可將照片加到Imageview上
-        photoImageView.contentMode = .scaleAspectFill
+        photoImageView.contentMode = .scaleAspectFit
         photoImageView.image = picture
         //選完照片後退掉畫面
         dismiss(animated: true)
@@ -250,7 +267,7 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
         switch pickerView.tag{
         case 1:
             return storeArray.count
-        case 2:
+        case 4:
             return commentArray.count
         default:
             return 0 //隨便給值 因為不會飽到default段
@@ -262,7 +279,7 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
         switch pickerView.tag{
         case 1:
             return storeArray[row]
-        case 2:
+        case 4:
             return commentArray[row]
         default:
             return "Nothing"
@@ -274,7 +291,7 @@ extension EditTableViewController:UIPickerViewDelegate,UIPickerViewDataSource{
         switch pickerView.tag{
         case 1:
             storeTextField.text = storeArray[row]
-        case 2:
+        case 4:
             commentTextField.text = commentArray[row]
         default:
             break
