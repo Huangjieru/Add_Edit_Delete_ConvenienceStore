@@ -244,6 +244,7 @@ extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationC
     //選擇照片
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         isSelectedPhoto = true
+        //型態為 originaImage，其它型態有影片、修改過的圖片等等
         let picture = info [UIImagePickerController.InfoKey.originalImage] as! UIImage //Any型別轉型成UIImage,才可將照片加到Imageview上
         photoImageView.contentMode = .scaleAspectFit
         photoImageView.image = picture

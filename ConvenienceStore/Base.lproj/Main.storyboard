@@ -69,7 +69,7 @@
                                                 <constraint firstAttribute="height" constant="80" id="vWl-Rf-E8f"/>
                                             </constraints>
                                         </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Hi-Life" translatesAutoresizingMaskIntoConstraints="NO" id="2sS-ix-UCl">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2sS-ix-UCl">
                                             <rect key="frame" x="302.33333333333331" y="85.333333333333329" width="57.666666666666686" height="57.666666666666671"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="2sS-ix-UCl" secondAttribute="height" multiplier="1:1" id="Ziv-5r-JAw"/>
@@ -368,7 +368,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Hi-Life" width="322" height="272"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
