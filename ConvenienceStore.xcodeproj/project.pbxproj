@@ -64,19 +64,43 @@
 		2BDCEF87290980B000E12B17 /* ConvenienceStore */ = {
 			isa = PBXGroup;
 			children = (
+				2BDCF65D293886B900067BB9 /* Model */,
+				2BDCF65E2938879300067BB9 /* View */,
+				2BDCF65F293887E200067BB9 /* Controller */,
 				2BDCEF88290980B000E12B17 /* AppDelegate.swift */,
 				2BDCEF8A290980B000E12B17 /* SceneDelegate.swift */,
 				2BDCEF8E290980B000E12B17 /* Main.storyboard */,
-				2BDCEF9C290987BC00E12B17 /* ListTableViewController.swift */,
-				2BDCEFA02909883400E12B17 /* EditTableViewController.swift */,
-				2BDCEFA22909898900E12B17 /* ListTableViewCell.swift */,
-				2BDCEFA629098C4500E12B17 /* Item.swift */,
-				2B735B82291BDC0F0024D0F0 /* TextField.swift */,
 				2BDCEF91290980B400E12B17 /* Assets.xcassets */,
 				2BDCEF93290980B400E12B17 /* LaunchScreen.storyboard */,
 				2BDCEF96290980B400E12B17 /* Info.plist */,
 			);
 			path = ConvenienceStore;
+			sourceTree = "<group>";
+		};
+		2BDCF65D293886B900067BB9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2BDCEFA629098C4500E12B17 /* Item.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2BDCF65E2938879300067BB9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2BDCEF9C290987BC00E12B17 /* ListTableViewController.swift */,
+				2BDCEFA02909883400E12B17 /* EditTableViewController.swift */,
+				2B735B82291BDC0F0024D0F0 /* TextField.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2BDCF65F293887E200067BB9 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2BDCEFA22909898900E12B17 /* ListTableViewCell.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

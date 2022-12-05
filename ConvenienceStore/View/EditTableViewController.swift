@@ -11,7 +11,7 @@ import Foundation
 class EditTableViewController: UITableViewController, UITextFieldDelegate {
 
     var thing:Item?
-    var isSelectedPhoto = false //是否選擇相簿
+    var isSelectedPhoto = false //是否選擇相片
     
     var pkvStore:UIPickerView!
     var pkvComment:UIPickerView!
@@ -145,10 +145,9 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
     
     //return鍵盤
     //<方法一>從 UITextField 連結 IBAction，Event 選擇 Did End On Exit
-    @IBAction func dismissItemKeyboard(_ sender: Any) {
-    }
     
-    @IBAction func dismissPriceKeyboard(_ sender: Any) {
+    
+    @IBAction func dismissItemKeyboard(_ sender: Any) {
     }
     
     //點背景退鍵盤

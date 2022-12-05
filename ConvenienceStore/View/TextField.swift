@@ -16,7 +16,7 @@ extension UITextField{
         toolbar.sizeToFit()
         toolbar.barTintColor = .systemMint
         //透明
-        //        toolbar.isTranslucent = true
+        //toolbar.isTranslucent = true
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(doneButtonTap))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)//彈性的拉開與cancel之間的距離
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: #selector(cancelButtonTap))

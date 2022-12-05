@@ -102,7 +102,7 @@ class ListTableViewController: UITableViewController {
         print(indexPath, items)
     }
     
-    //Step1.退掉編輯頁面回到前一頁（此頁）
+    //退掉編輯頁面回到前一頁（此頁）
     @IBAction func unwindToListTableViewControllerWithSegue(_ unwindSegue: UIStoryboardSegue) {
         //修改
         if let sourceViewController = unwindSegue.source as? EditTableViewController, let thing = sourceViewController.thing
@@ -123,7 +123,7 @@ class ListTableViewController: UITableViewController {
             }
     }
         
-        //<補充>新增情人時 indexPathForSelectedRow 是 nil,點選 cell 修改情人時 indexPathForSelectedRow 才會有值
+        //<補充>新增時 indexPathForSelectedRow 是 nil,點選 cell 修改時 indexPathForSelectedRow 才會有值
     }
     
     // MARK: - Navigation
