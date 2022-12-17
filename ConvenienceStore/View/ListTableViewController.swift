@@ -49,7 +49,7 @@ class ListTableViewController: UITableViewController {
         
         
         let documentDirectory  = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let imageURL = documentDirectory.appending(path: "\(thing.photoName ?? "").jpg")
+        let imageURL = documentDirectory.appendingPathComponent("\(thing.photoName ?? "").jpg")
             cell.photoImageView?.image = UIImage(contentsOfFile: imageURL.path)
 //        print("圖片有傳到此頁：\(String(describing: thing.photoName!))")
 //        print(imageURL)

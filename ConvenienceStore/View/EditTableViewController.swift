@@ -79,7 +79,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
             commentTextField.text = thing?.comment
             //有圖片名字才去讀出url
             if let imageName = thing?.photoName{
-                let photoURL = Item.documentsDirectory.appending(path: imageName).appendingPathExtension("jpg")
+                let photoURL = Item.documentsDirectory.appendingPathComponent(imageName).appendingPathExtension("jpg")
                 photoImageView.image = UIImage(named: photoURL.path)
             }
             
@@ -212,7 +212,7 @@ class EditTableViewController: UITableViewController, UITextFieldDelegate {
                   //compressionQuality(0~1)來減少圖片容量
                   let photoData = photoImageView.image?.jpegData(compressionQuality: 0.7)
                   //圖片路徑：先讀出「資料夾」加上「圖片名稱」加上「副檔名」
-                  let photoURL = Item.documentsDirectory.appending(path: photoName!).appendingPathExtension("jpg")
+                  let photoURL = Item.documentsDirectory.appendingPathComponent(photoName!).appendingPathExtension("jpg")
                   //將圖片存入路徑位置=>write是複寫，存入後之前的會被覆蓋掉
                   //<方法一>try? photoData?.write(to: photoURL)
                   //<方法二>
@@ -238,6 +238,7 @@ extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationC
         let imageContriller = UIImagePickerController()
         imageContriller.sourceType = .photoLibrary
         imageContriller.delegate = self
+        imageContriller.allowsEditing = true //選取後的照片是否能編緝
         present(imageContriller, animated: true)
     }
     //選擇照片
@@ -247,9 +248,12 @@ extension EditTableViewController:UIImagePickerControllerDelegate ,UINavigationC
         let picture = info [UIImagePickerController.InfoKey.originalImage] as! UIImage //Any型別轉型成UIImage,才可將照片加到Imageview上
         photoImageView.contentMode = .scaleAspectFit
         photoImageView.image = picture
+        //照片存入相簿
+        UIImageWriteToSavedPhotosAlbum(picture, nil, nil, nil)
         //選完照片後退掉畫面
         dismiss(animated: true)
     }
+
     func takePicture(){
         let controller = UIImagePickerController()
         controller.sourceType = .camera

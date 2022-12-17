@@ -17,7 +17,7 @@ struct Item:Codable{ //要 Codable or Encodable 才能轉成 Data
     let comment:String
     
     var photoURL:URL {
-        Item.documentsDirectory.appending(path: photoName ?? "")
+        Item.documentsDirectory.appendingPathComponent(photoName ?? "")
     }
     /*
      //<方法一>UserDefaults
